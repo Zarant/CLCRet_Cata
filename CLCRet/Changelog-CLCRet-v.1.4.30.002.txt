@@ -1,0 +1,45 @@
+------------------------------------------------------------------------
+r198 | abija | 2011-12-12 12:22:16 +0000 (Mon, 12 Dec 2011) | 1 line
+Changed paths:
+   A /tags/v.1.4.30.002 (from /trunk:197)
+
+Tagging as v.1.4.30.002
+------------------------------------------------------------------------
+r196 | abija | 2011-12-03 08:36:12 +0000 (Sat, 03 Dec 2011) | 1 line
+Changed paths:
+   M /trunk/Options/options.lua
+   M /trunk/clcret.lua
+   M /trunk/rotation.lua
+
+- optional Zealotry priority for retribution
+------------------------------------------------------------------------
+r195 | abija | 2011-12-01 11:19:29 +0000 (Thu, 01 Dec 2011) | 1 line
+Changed paths:
+   M /trunk/rotation.lua
+
+- jhpzeal and nozeal were reversed, should be fixed
+------------------------------------------------------------------------
+r194 | abija | 2011-12-01 09:05:26 +0000 (Thu, 01 Dec 2011) | 1 line
+Changed paths:
+   M /trunk/rotation.lua
+
+- added jhpnozeal and jhpzeal as options
+------------------------------------------------------------------------
+r193 | abija | 2011-11-30 15:29:45 +0000 (Wed, 30 Nov 2011) | 3 lines
+Changed paths:
+   M /trunk/CLCRet.toc
+   M /trunk/Options/CLCRet_Options.toc
+   M /trunk/Options/options.lua
+   M /trunk/clcret.lua
+   M /trunk/rotation.lua
+
+- 4.3 toc update
+- jhp option for rotation (for new set) - remember to adjust judgement clash value if you increase judgement priority
+- NOT TESTED
+------------------------------------------------------------------------
+r192 | abija | 2011-09-09 09:19:24 +0000 (Fri, 09 Sep 2011) | 1 line
+Changed paths:
+   M /trunk/sov.lua
+
+trying to fix some sov tracking issues
+------------------------------------------------------------------------
