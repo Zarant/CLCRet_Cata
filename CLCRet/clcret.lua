@@ -743,16 +743,16 @@ function clcret:AuraButtonExecGenericDebuff()
 	local index = auraIndex
 	local button = auraButtons[index]
 	local data = db.auras[index].data
-	print(index)
+	--print(index)
 	
 	if not UnitExists(data.unit) then
-		print(data.unit)
+		--print(data.unit)
 		button:Hide()
 		return
 	end
 	
 	local name, icon, count, debuffType, duration, expirationTime, caster = UnitDebuff(data.unit, data.spell)
-	print(name, icon, count, debuffType, duration, expirationTime, caster)
+	--print(name, icon, count, debuffType, duration, expirationTime, caster)
 	if name then
 		if data.byPlayer and (caster ~= "player") then
 			button:Hide()
