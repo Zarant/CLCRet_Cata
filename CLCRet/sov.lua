@@ -19,6 +19,7 @@ local MAX_SOVBARS = 5
 local sovAnchor
 clcret.showSovAnchor = false
 local playerName
+local playerGUID
 
 local db
 
@@ -44,12 +45,14 @@ local refreshers = {
 }
 
 function clcret:SOV_COMBAT_LOG_EVENT_UNFILTERED(event, timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, spellType, dose, ...)
-	if sourceName == playerName then
+	
+	if sourceGUID == playerGUID then
 		if spellId == sovId then
+			--print(combatEvent,spellId)
 			if combatEvent == "SPELL_AURA_APPLIED" then
-				self:Sov_SPELL_AURA_APPLIED(destGUID, destName)
+				self:Sov_SPELL_AURA_APPLIED(destGUID, destName, nil, timestamp)
 			elseif combatEvent == "SPELL_AURA_APPLIED_DOSE" then
-				self:Sov_SPELL_AURA_APPLIED_DOSE(destGUID, destName, dose)
+				self:Sov_SPELL_AURA_APPLIED_DOSE(destGUID, destName, dose, timestamp)
 			elseif combatEvent == "SPELL_AURA_REMOVED_DOSE" then
 				self:Sov_SPELL_AURA_REMOVED_DOSE(destGUID, destName, dose)
 			elseif combatEvent == "SPELL_AURA_REMOVED" then
@@ -65,8 +68,11 @@ function clcret:SOV_COMBAT_LOG_EVENT_UNFILTERED(event, timestamp, combatEvent, h
 	end
 end
 
+local applicationTimer
 -- starts to track the hot for that guid
-function clcret:Sov_SPELL_AURA_APPLIED(guid, name, dose)
+function clcret:Sov_SPELL_AURA_APPLIED(guid, name, dose, timestamp)
+	applicationTimer = timestamp
+	--print("APPLIED")
 	dose = dose or 1
 	for i = 1, MAX_SOVBARS do
 		if sovBars[i].active == false then
@@ -83,7 +89,9 @@ function clcret:Sov_SPELL_AURA_APPLIED(guid, name, dose)
 end
 
 -- updates the stack for the guid if it founds it, also refreshes timer
-function clcret:Sov_SPELL_AURA_APPLIED_DOSE(guid, name, dose)
+function clcret:Sov_SPELL_AURA_APPLIED_DOSE(guid, name, dose, timestamp)
+	
+	--print("APPLIED_DOSE")
 	for i = 1, MAX_SOVBARS do
 		if sovBars[i].guid == guid then
 			sovBars[i].labelStack:SetText(dose)
@@ -113,10 +121,12 @@ end
 
 -- refreshes the timer
 function clcret:Sov_SPELL_AURA_REFRESH(guid, name)
+	--print('REFRESH')
 	for i = 1, MAX_SOVBARS do
 		if sovBars[i].guid == guid then
 			sovBars[i].start = GetTime()
 			sovBars[i].active = true
+			--sovBars[i].guid = 0
 			return
 		end
 	end
@@ -322,7 +332,7 @@ function clcret:InitSovBars()
 	db = clcret.db.profile	
 	
 	playerName = UnitName("player")
-
+	playerGUID = UnitGUID("player")
 	-- create sov anchor
 	sovAnchor = self:CreateSovAnchor()
 	for i = 1, MAX_SOVBARS do

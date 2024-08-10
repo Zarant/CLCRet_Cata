@@ -2,19 +2,8 @@
 local _, class = UnitClass("player")
 if class ~= "PALADIN" then return end
 
-local UnitBuff = function(unitToken, index, filter)
-	local auraData 
-	if type(index) == "string" then
-		auraData = C_UnitAuras.GetAuraDataBySpellName(unitToken, index, "HELPFUL")
-	else
-		auraData = C_UnitAuras.GetBuffDataByIndex(unitToken, index, filter);
-	end
-	if not auraData then
-		return nil;
-	end
 
-	return AuraUtil.UnpackAuraData(auraData);
-end
+local UnitBuff = clcret.UnitBuff
 
 SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 

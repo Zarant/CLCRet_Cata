@@ -3,7 +3,37 @@ if trueclass ~= "PALADIN" then return end
 
 local GetTime = GetTime
 
+local UnitBuff = function(unitToken, index, filter)
+	local auraData 
+	if type(index) == "string" then
+		auraData = C_UnitAuras.GetAuraDataBySpellName(unitToken, index, "HELPFUL")
+	else
+		auraData = C_UnitAuras.GetBuffDataByIndex(unitToken, index, filter or "HELPFUL");
+	end
+	if not auraData then
+		return nil;
+	end
+
+	return AuraUtil.UnpackAuraData(auraData);
+end
+
+local UnitDebuff = function(unitToken, index, filter)
+	local auraData 
+	if type(index) == "string" then
+		auraData = C_UnitAuras.GetAuraDataBySpellName(unitToken, index, "HARMFUL")
+	else
+		auraData = C_UnitAuras.GetBuffDataByIndex(unitToken, index, filter or "HARMFUL");
+	end
+	if not auraData then
+		return nil;
+	end
+
+	return AuraUtil.UnpackAuraData(auraData);
+end
+
 clcret = LibStub("AceAddon-3.0"):NewAddon("clcret", "AceEvent-3.0", "AceConsole-3.0")
+
+clcret.UnitBuff = UnitBuff
 
 local MAX_AURAS = 20
 local BGTEX = "Interface\\AddOns\\clcret\\textures\\minimalist"
@@ -600,7 +630,7 @@ function clcret:AuraButtonExecPlayerMissingBuff()
 		button.hasTexture = true
 	end
 	
-	local name, rank, icon, count, debuffType, duration, expirationTime, caster = UnitBuff("player", data.spell)
+	local name, icon, count, debuffType, duration, expirationTime, caster = UnitBuff("player", data.spell)
 	if not name then
 		button:Show()
 	else
@@ -677,7 +707,7 @@ function clcret:AuraButtonExecGenericBuff()
 		return
 	end
 	
-	local name, rank, icon, count, debuffType, duration, expirationTime, caster = UnitBuff(data.unit, data.spell)
+	local name, icon, count, debuffType, duration, expirationTime, caster = UnitBuff(data.unit, data.spell)
 	if name then
 		if data.byPlayer and (caster ~= "player") then
 			-- player required and not found
@@ -713,13 +743,16 @@ function clcret:AuraButtonExecGenericDebuff()
 	local index = auraIndex
 	local button = auraButtons[index]
 	local data = db.auras[index].data
+	print(index)
 	
 	if not UnitExists(data.unit) then
+		print(data.unit)
 		button:Hide()
 		return
 	end
 	
-	local name, rank, icon, count, debuffType, duration, expirationTime, caster = UnitDebuff(data.unit, data.spell)
+	local name, icon, count, debuffType, duration, expirationTime, caster = UnitDebuff(data.unit, data.spell)
+	print(name, icon, count, debuffType, duration, expirationTime, caster)
 	if name then
 		if data.byPlayer and (caster ~= "player") then
 			button:Hide()
@@ -1204,6 +1237,8 @@ end
 -- cleu dispatcher wannabe
 function clcret:COMBAT_LOG_EVENT_UNFILTERED(event, timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, spellType, dose, ...)
 	-- pass info for the sov function
+	
+	timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, spellType, dose = CombatLogGetCurrentEventInfo()
 	if db.sov.enabled then
 		clcret:SOV_COMBAT_LOG_EVENT_UNFILTERED(event, timestamp, combatEvent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, spellType, dose, ...)
 	end
