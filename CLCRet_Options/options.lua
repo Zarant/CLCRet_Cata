@@ -1090,7 +1090,7 @@ for i = 1, MAX_AURAS do
 	}
 end
 
--- remove the first one we added
+--[[ remove the first one we added
 for i = 1, #INTERFACEOPTIONS_ADDONCATEGORIES do
 	if 	INTERFACEOPTIONS_ADDONCATEGORIES[i]
 	and INTERFACEOPTIONS_ADDONCATEGORIES[i].name
@@ -1098,19 +1098,19 @@ for i = 1, #INTERFACEOPTIONS_ADDONCATEGORIES do
 	then
 		table.remove(INTERFACEOPTIONS_ADDONCATEGORIES, i)
 	end
-end
+end]]
 
 local AceConfig = LibStub("AceConfig-3.0")
 AceConfig:RegisterOptionsTable("CLCRet", options)
 
 local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet", nil, "global")
-AceConfigDialog:AddToBlizOptions("CLCRet", "Appearance", nil, "appearance")
-AceConfigDialog:AddToBlizOptions("CLCRet", "Rotation", nil, "rotation")
-AceConfigDialog:AddToBlizOptions("CLCRet", "Behavior", nil, "behavior")
-AceConfigDialog:AddToBlizOptions("CLCRet", "Aura Buttons", nil, "auras")
-AceConfigDialog:AddToBlizOptions("CLCRet", "Layout", nil, "layout")
-AceConfigDialog:AddToBlizOptions("CLCRet", "SoV Tracking", nil, "sov")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - Appearance", nil, "appearance")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - Rotation", nil, "rotation")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - Behavior", nil, "behavior")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - Aura Buttons", nil, "auras")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - Layout", nil, "layout")
+AceConfigDialog:AddToBlizOptions("CLCRet", "CLCRet - SoV Tracking", nil, "sov")
 
 -- profiles
 options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(clcret.db)
