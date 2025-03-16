@@ -164,13 +164,13 @@ local defaults = {
 			inqRefresh = 2,
 			inqApplyMin = 1,
 			inqRefreshMin = 2,
-			jClash = 0,
-			hwClash = 0,
-			consClash = 0,
-			consMana = 30000,
+			jClash = 0.8,
+			hwClash = 0.8,
+			consClash = 0.8,
+			consMana = 16000,
 			undead = "Undead",
 			demon = "Demon",
-			csBuffer = 0,
+			csBuffer = 0.2,
 		},
 		
 		-- behavior
