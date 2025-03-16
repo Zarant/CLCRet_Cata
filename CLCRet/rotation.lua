@@ -51,16 +51,47 @@ local function GetCooldown(id)
 	return cd
 end
 
+
+local t13 = 0
+local tierSlots = {1,3,5,7,10}
+local combatStart = 0
+function clcret.GetRGSetBonus(self,event)
+	if event == "PLAYER_REGEN_DISABLED" then
+		combatStart = GetTime()
+	end
+	local t = 0
+	for _,slot in ipairs(tierSlots) do
+		local id = GetInventoryItemID("player",slot)
+		if id then
+			local set = select(16,GetItemInfo(id))
+			if set == 1064 then
+				t = t + 1
+			end
+		end
+	end
+	--if t ~= tierPieces then print(t) end 
+	t13 = t
+end
+
+local setbonusTracker = CreateFrame("Frame")
+setbonusTracker:RegisterEvent("PLAYER_REGEN_ENABLED")
+setbonusTracker:RegisterEvent("PLAYER_REGEN_DISABLED")
+setbonusTracker:SetScript("OnEvent",clcret.GetRGSetBonus)
+
 -- actions ---------------------------------------------------------------------
 local actions = {
 	-- inquisition, apply, 3 hp
 	inqa = {
 		id = inqId,
 		GetCD = function()
-			if s_inq <= 0 and (s_hp >= db.inqApplyMin or s_dp > 0) then
+			--79634 pre pot
+			if db.inq3hp and (GetTime() - combatStart < 30 or not InCombatLockdown()) and not(s_dp > 0 or s_hp >= 3) and GetCooldown(zealId) <= 0 then
+				return 100
+			elseif s_inq <= 0 and (s_hp >= db.inqApplyMin or s_dp > 0) then
 				return 0
+			else
+				return 100
 			end
-			return 100
 		end,
 		UpdateStatus = function()
 			s_ctime = s_ctime + s_gcd + 1.5 / s_haste
@@ -265,9 +296,9 @@ local actions = {
 	jhp = {
 		id = jId,
 		GetCD = function()
-			if s_hp >= 3 then return 100 end
+			if s_hp >= 3 or t13 < 2 then return 100 end
 			if s1 ~= jId then
-				local jCd = GetCooldown(jId) + db.jClash - db.csBuffer
+				local jCd = GetCooldown(jId) - db.csBuffer
 				if jCd < 0 then jCd = 0 end
 				return jCd
 			end

@@ -575,6 +575,10 @@ local options = {
 								},
 							},
 						},
+						inq3hp = {
+							order = 2.1, type = "toggle", width = "full", name = "3 HP Inquisition on pull",
+							get = RotationGet, set = RotationSet,
+						},
 						zealPrio = {
 							order = 3, type="group", inline = true, name = "Zealotry priority",
 							args = {

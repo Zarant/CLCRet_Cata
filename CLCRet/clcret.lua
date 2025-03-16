@@ -157,12 +157,13 @@ local defaults = {
 		
 		-- rotation
 		rotation = {
-			prio = "inqa inqrhp tvhp cs inqrdp tvdp exoud exo how j hw cons",
-			prioZeal = "tvhp cs tvdp",
-			usePrioZeal = false,
-			inqRefresh = 5,
-			inqApplyMin = 3,
-			inqRefreshMin = 3,
+			prio = "inqa cs jhp inqr tv exo how j hw cons",
+			prioZeal = "inqa inqrhp tvhp cs inqrdp tvdp exo how j hw cons",
+			usePrioZeal = true,
+			inq3hp = true,
+			inqRefresh = 2,
+			inqApplyMin = 1,
+			inqRefreshMin = 2,
 			jClash = 0,
 			hwClash = 0,
 			consClash = 0,
@@ -430,11 +431,13 @@ end
 -- out of combat
 function clcret:PLAYER_REGEN_ENABLED()
 	if not addonEnabled then return end
+	clcret.GetRGSetBonus()
 	self.frame:Hide()
 end
 -- in combat
 function clcret:PLAYER_REGEN_DISABLED()
 	if not addonEnabled then return end
+	clcret.GetRGSetBonus()
 	self.frame:Show()
 end
 -- target change
